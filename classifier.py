@@ -6,12 +6,12 @@ def main():
     print("data/", end='')
     path = input()
     
-    print(classify(path))
+    print(classify(f'data/{path}'))
     
 
 def classify(path) -> str:
     try:
-        file = open(f"data/{path}", "rb")
+        file = open(f"{path}", "rb")
     except FileNotFoundError:
         return "File not found"
     
@@ -19,7 +19,7 @@ def classify(path) -> str:
 
     text = read_first(file)    
     if text == "":
-        text = read_first_image(f"data/{path}")
+        text = read_first_image(path)
 
     matches = re.findall(pattern, text, re.IGNORECASE)
     clusters = ['Lei', 'Portaria', 'Resolução']
