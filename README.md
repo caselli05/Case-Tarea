@@ -42,7 +42,7 @@ Siga os passos abaixo para configurar e executar o projeto localmente.
 
 ### 1. Clonar o Repositório
 ```bash
-git clone [https://github.com/caselli05/Case-Tarea.git](https://github.com/caselli05/Case-Tarea.git)
+git clone https://github.com/caselli05/Case-Tarea.git
 cd Case-Tarea
 ```
 
