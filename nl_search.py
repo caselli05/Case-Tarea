@@ -4,7 +4,7 @@ from pdf_reader import read_all, read_all_image
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+
 json_name = "data/embedding-pt.json"
 
 
@@ -18,6 +18,7 @@ def main():
 
 
 def encode_pdfs():
+    model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
     pdfs_names = ['Lei_9394_20121996.pdf', 'Lei_9784_29011999.pdf', 'Lei_14945_31072024.pdf',
                   'Portaria_44_28052025.pdf', 'Portaria_81_25082015.pdf', 'Portaria_2140_04072025.pdf',
                   'Resolucao_99_156202023.pdf', 'Resolucao_909_28032022.pdf', 'Resolucao_2430_21052025.pdf', 'Resolucao_2434_03072025.pdf']
@@ -69,9 +70,9 @@ def encode_pdfs():
 def check_similarity(prompt:str, 
                      top_k:int = 5, 
                      loaded_data=None,
-                     embedding_model=model) -> tuple[set, set[str]]:
+                     embedding_model=SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')) -> tuple[set, set[str]]:
     if not embedding_model:
-        embedding_model=model
+        embedding_model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
     if not loaded_data:
         embendding_json = json_name
         with open(embendding_json, 'r', encoding='utf-8') as f:

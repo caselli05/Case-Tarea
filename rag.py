@@ -2,8 +2,6 @@ from langchain_community.llms import Ollama
 from langchain_core.prompts import ChatPromptTemplate
 from nl_search import check_similarity
 
-llm = Ollama(model="mistral")
-
 def main():
     print("Qual a sua pergunta?")
     user_question = input()
@@ -17,7 +15,7 @@ def main():
 def answer_question(user_question:str,
                     top_k=5, 
                     loaded_data=None, 
-                    model=llm,
+                    model=Ollama(model="mistral"),
                     embedding_model=None) -> tuple[str, str]:
     (relevant_context, sources) = check_similarity(user_question, top_k, loaded_data, embedding_model=embedding_model)
 
