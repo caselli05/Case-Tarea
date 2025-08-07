@@ -90,6 +90,7 @@ streamlit run app.py
 A aplicação será aberta automaticamente no seu navegador em um endereço local (ex: http://localhost:8501).
 
 ## 📁 Estrutura do Projeto
+```
 .
 ├── 📄 .gitignore
 ├── 📄 README.md
@@ -100,3 +101,4 @@ A aplicação será aberta automaticamente no seu navegador em um endereço loca
 └── 📁 data/
     ├── 📄 Lei_14945_31072024.pdf # (e outros 9 arquivos PDF)
     └── 📄 embedding.json        # Arquivo gerado pelo encode_pdfs.py
+```
