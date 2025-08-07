@@ -1,10 +1,11 @@
 import json
 import numpy as np
 from pdf_reader import read_all, read_all_image
-import re
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+json_name = "data/embedding-pt.json"
 
 
 def main():
@@ -34,7 +35,18 @@ def encode_pdfs():
             text = read_all_image(path)
         print(f'Read file {pdf_name}')
 
-        sentences = re.split('.\n', text)
+        # --- Instanciando e configurando o splitter ---
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=1000,
+            
+            chunk_overlap=200,
+            length_function=len,
+            
+            is_separator_regex=False,
+        )
+
+        sentences = text_splitter.split_text(text)
+        
         embeddings = model.encode(sentences)
         print(" Encoded sentences from this file")
         for i, sentence in enumerate(sentences):
@@ -48,22 +60,28 @@ def encode_pdfs():
                 print(f'    Saved {i+1}/{len(sentences)}')
         print(" Finish saving sentences")
     
-    json_path = 'data/embedding.json'
+    json_path = json_name
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4)
     print(f"Data stored in {json_path}")
 
 
-def check_similarity(prompt:str) -> str:
-    embendding_json = 'data/embedding.json'
-    with open(embendding_json, 'r', encoding='utf-8') as f:
-        loaded_data = json.load(f)
+def check_similarity(prompt:str, 
+                     top_k:int = 5, 
+                     loaded_data=None,
+                     embedding_model=model) -> tuple[set, set[str]]:
+    if not embedding_model:
+        embedding_model=model
+    if not loaded_data:
+        embendding_json = json_name
+        with open(embendding_json, 'r', encoding='utf-8') as f:
+            loaded_data = json.load(f)
     
     doc_embeddings = [np.array(item['embedding']) for item in loaded_data]
     doc_paragraphs = [item['sentence'] for item in loaded_data]
     doc_sources = [item['path'] for item in loaded_data]
     
-    embedded_prompt = model.encode(prompt)
+    embedded_prompt = embedding_model.encode(prompt)
 
     similarity_scores = cosine_similarity(
         [embedded_prompt],
@@ -71,15 +89,27 @@ def check_similarity(prompt:str) -> str:
     )
 
     scores = similarity_scores[0]
-    most_similar_index = np.argmax(scores)
+    top_idx = np.argsort(scores)[-top_k:][::-1]
 
-    best_match_paragraph = doc_paragraphs[most_similar_index]
-    best_match_source = doc_sources[most_similar_index]
-    best_match_score = scores[most_similar_index]
+    sources = set()
+    res = ""
+    for i, index in enumerate(top_idx):
+        best_match_paragraph = doc_paragraphs[index]
+        best_match_source = doc_sources[index]
+        res = res + (f"Fonte: '{best_match_source}'\n"
+                     f"Trecho: \"{best_match_paragraph}\"\n")
 
-    return (f"Found in '{best_match_source}' "
-            f"with a score of {best_match_score:.2f}:\n"
-            f'"{best_match_paragraph}"')
+        best_match_score = scores[index]
+        print(f"\n--- Resultado {i+1} ---\n"
+                     f"Fonte: '{best_match_source}'\n"
+                     f"Similaridade: {best_match_score:.2f}\n"
+                     f"Trecho: \"{best_match_paragraph}\"\n")
+        sources.add(best_match_source)
+
+    print("\n\n")
+
+    return (res, sources)
+
 
 
 
@@ -88,4 +118,5 @@ def check_similarity(prompt:str) -> str:
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    encode_pdfs()
