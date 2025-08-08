@@ -8,10 +8,10 @@ O objetivo é desenvolver uma aplicação que consiga ler, classificar e interag
 
 ## ✨ Funcionalidades
 
-- [cite_start]**Extração de Texto:** Extrai conteúdo textual de arquivos PDF, com suporte a OCR para documentos baseados em imagem.
-- [cite_start]**Classificação Automática:** Classifica cada documento em categorias (ex: Lei, Portaria, Resolução) com base em palavras-chave encontradas no texto.
-- [cite_start]**Busca Semântica:** Permite que o usuário encontre os trechos de texto mais relevantes para uma pergunta feita em linguagem natural, utilizando embeddings e similaridade de cosseno.
-- [cite_start]**Chat Interativo com LLM:** Oferece uma interface de chat onde um Modelo de Linguagem (LLM) local responde às perguntas do usuário com base no contexto extraído dos documentos.[cite_end]
+- **Extração de Texto:** Extrai conteúdo textual de arquivos PDF, com suporte a OCR para documentos baseados em imagem.
+- **Classificação Automática:** Classifica cada documento em categorias (ex: Lei, Portaria, Resolução) com base em palavras-chave encontradas no texto.
+- **Busca Semântica:** Permite que o usuário encontre os trechos de texto mais relevantes para uma pergunta feita em linguagem natural, utilizando embeddings e similaridade de cosseno.
+- **Chat Interativo com LLM:** Oferece uma interface de chat onde um Modelo de Linguagem (LLM) local responde às perguntas do usuário com base no contexto extraído dos documentos.
 
 ## 🛠️ Stack de Tecnologias
 
