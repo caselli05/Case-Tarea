@@ -36,7 +36,7 @@ if prompt := st.chat_input("Faça uma pergunta sobre os documentos..."):
 
     with st.chat_message("assistant"):
         with st.spinner("Analisando documentos..."):
-            response, sources = answer_question(user_question=prompt, loaded_data=loaded_data, model=llm, embedding_model=model)
+            response, sources = answer_question(user_question=prompt, top_k=3, loaded_data=loaded_data, model=llm, embedding_model=model)
             
             full_response = f"{response}\n\n---\n*{sources}*"
             st.markdown(full_response)

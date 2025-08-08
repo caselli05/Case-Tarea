@@ -36,13 +36,10 @@ def encode_pdfs():
             text = read_all_image(path)
         print(f'Read file {pdf_name}')
 
-        # --- Instanciando e configurando o splitter ---
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
-            
             chunk_overlap=200,
             length_function=len,
-            
             is_separator_regex=False,
         )
 
@@ -98,7 +95,7 @@ def check_similarity(prompt:str,
         best_match_paragraph = doc_paragraphs[index]
         best_match_source = doc_sources[index]
         res = res + (f"Fonte: '{best_match_source}'\n"
-                     f"Trecho: \"{best_match_paragraph}\"\n")
+                     f"Trecho: \"{best_match_paragraph + doc_paragraphs[index+1]}\"\n")
 
         best_match_score = scores[index]
         print(f"\n--- Resultado {i+1} ---\n"
