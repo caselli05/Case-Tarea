@@ -101,7 +101,7 @@ def check_similarity(prompt:str,
         print(f"\n--- Resultado {i+1} ---\n"
                      f"Fonte: '{best_match_source}'\n"
                      f"Similaridade: {best_match_score:.2f}\n"
-                     f"Trecho: \"{best_match_paragraph}\"\n")
+                     f"Trecho: \"{best_match_paragraph + doc_paragraphs[index+1]}\"\n")
         sources.add(best_match_source)
 
     print("\n\n")
